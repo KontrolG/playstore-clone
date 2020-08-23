@@ -1,8 +1,6 @@
+const { getAll } = require("./commonHandlers");
 const Role = require("../models").role;
 
-const getRoles = async (request, response) => {
-  const roles = await Role.findAll();
-  response.status(200).json(roles);
-};
+const getRoles = getAll(Role);
 
 module.exports = { getRoles };
