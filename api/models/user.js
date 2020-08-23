@@ -15,24 +15,40 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "First name field is required" }
+        }
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Last name field is required" }
+        }
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+          notEmpty: { msg: "Email field is required" },
+          isEmail: { msg: "Email is invalid" }
+        }
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Password field is required" }
+        }
       },
       roleId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          notEmpty: { msg: "Role field is required" }
+        },
         references: {
           model: {
             tableName: "roles"
@@ -49,5 +65,8 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true
     }
   );
+
+  // user.beforeCreate(encryptFieldValue("password"));
+
   return user;
 };

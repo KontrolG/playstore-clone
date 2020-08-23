@@ -1,32 +1,26 @@
 const User = require("../models").user;
+const catchAsyncHandler = require("../utils/catchAsyncHandler");
 
-const getHashedPassword = password => password; // dummy
+const getUserDataFromRequestBody = ({
+  firstName,
+  lastName,
+  email,
+  password,
+  roleId
+}) => ({ firstName, lastName, email, password, roleId });
 
-const signup = async (request, response, next) => {
-  // validation
-  const { firstName, lastName, email, password, roleId } = request.body;
-  // encrypt password
-  try {
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: getHashedPassword(password),
-      roleId
-    });
-    // save to the database
-    console.log(newUser);
-  } catch (error) {
-    console.log(error);
-  }
+const signup = catchAsyncHandler(async (request, response) => {
+  const userData = getUserDataFromRequestBody(request.body);
+  const newUser = await User.create(userData);
+  response.status(200).json(newUser);
+});
 
-  // send success message
-  response.status(200).json({
-    status: "success"
-  });
+const login = (request, response) => {
+  const { email, password } = request.body;
+  // Validate inputs
+  // Find email
+  // compare passwords
 };
-
-const login = () => {};
 const logout = () => {};
 
 module.exports = { signup, login, logout };
