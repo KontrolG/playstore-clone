@@ -2,6 +2,8 @@ const database = require("./models");
 
 const { sequelize } = database;
 
+sequelize.sync({ force: true });
+
 const connectDatabase = async () => {
   try {
     await sequelize.authenticate();
