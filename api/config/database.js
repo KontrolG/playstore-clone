@@ -1,10 +1,10 @@
 const commonConfig = {
-  username: "postgres",
-  password: 1234,
-  database: "challenge-javascript-alkemy-labs",
-  host: "localhost",
-  port: 5432,
-  dialect: "postgres"
+  username: "<YOUR_USERNAME>",
+  password: "<YOUR_PASSWORD",
+  database: "<YOUR_DATABASE>",
+  host: "<YOUR_HOST>",
+  port: "<YOUR_PORT>",
+  dialect: "<YOUR_DIALECT>"
 };
 
 module.exports = {
