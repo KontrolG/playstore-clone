@@ -2,7 +2,7 @@ const database = require("./models");
 
 const { sequelize } = database;
 
-sequelize.sync({ force: true });
+// sequelize.sync({ alter: true });
 
 const connectDatabase = async () => {
   try {
