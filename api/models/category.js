@@ -13,8 +13,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   category.init(
     {
-      name: DataTypes.STRING,
-      description: DataTypes.STRING
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     },
     {
       sequelize,
