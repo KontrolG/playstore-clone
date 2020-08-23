@@ -15,9 +15,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
-      nickname: DataTypes.STRING,
+      nickname: { type: DataTypes.STRING, unique: true },
       password: DataTypes.STRING,
-      email: DataTypes.STRING
+      email: { type: DataTypes.STRING, unique: true }
+      /* roleId: {
+        type: DataTypes.INTEGER,
+        references: { model: role, key: "id" }
+      } */
     },
     {
       sequelize,
