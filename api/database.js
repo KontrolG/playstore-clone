@@ -1,32 +1,10 @@
-const { Sequelize } = require("sequelize");
+const database = require("./models");
 
-const {
-  SEQUELIZE_DATABASE,
-  SEQUELIZE_USERNAME,
-  SEQUELIZE_PASSWORD,
-  SEQUELIZE_HOST,
-  SEQUELIZE_DIALECT
-} = process.env;
+const { sequelize } = database;
 
 const connectDatabase = async () => {
-  const sequelize = new Sequelize(
-    SEQUELIZE_DATABASE,
-    SEQUELIZE_USERNAME,
-    SEQUELIZE_PASSWORD,
-    {
-      host: SEQUELIZE_HOST,
-      dialect: SEQUELIZE_DIALECT
-    }
-  );
-
   try {
-    console.log("Connecting to the database", {
-      SEQUELIZE_DATABASE,
-      SEQUELIZE_USERNAME,
-      SEQUELIZE_PASSWORD,
-      SEQUELIZE_HOST,
-      SEQUELIZE_DIALECT
-    });
+    console.log("Connecting to the database");
 
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
