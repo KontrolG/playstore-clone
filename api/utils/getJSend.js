@@ -38,7 +38,7 @@ const getStatusStringFromStatusCode = statusCode => {
   }
 };
 
-const getJSendWithData = (data, jSend) => {
+const getJSendWithData = (jSend, data) => {
   const jSendWithData = { ...jSend, data };
   return getJSendWithDataLenght(jSendWithData);
 };
