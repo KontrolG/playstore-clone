@@ -1,26 +1,13 @@
-const getFormattedResponse = (status, content) => {
-  // Clase formatted para luego formatter.setContent, set ....
-  const formattedResponse = { status };
-  if (status === "error") {
-    formattedResponse.message = content;
-  } else {
-    const [contentBody] = Object.values(content) || [null];
-    if (Array.isArray(contentBody)) {
-      formattedResponse.results = contentBody.length;
-    }
-    formattedResponse.data = content;
-  }
-  return formattedResponse;
-};
-
-const getJSend = (statusCode, content) => {
+const getJSend = (statusCode, content, errors) => {
   const status = getStatusStringFromStatusCode(statusCode);
   const jSend = { status };
-  if (status === "error" || status === "fail") {
-    return { ...jSend, message: content };
-  } else {
-    return getJSendWithData(jSend, content);
+  if (status === "fail") {
+    return { ...jSend, data: errors };
   }
+  if (status === "error") {
+    return { ...jSend, message: content };
+  }
+  return getJSendWithData(jSend, content);
 };
 
 const getStatusStringFromStatusCode = statusCode => {
@@ -44,9 +31,9 @@ const getJSendWithData = (jSend, data) => {
 };
 
 const getJSendWithDataLenght = jSendWithData => {
-  const [contentBody] = Object.values(jSendWithData.data) || [null];
-  if (Array.isArray(contentBody)) {
-    return { ...jSendWithData, results: contentBody.length };
+  const { data } = jSendWithData;
+  if (Array.isArray(data)) {
+    return { ...jSendWithData, results: data.length };
   }
   return jSendWithData;
 };

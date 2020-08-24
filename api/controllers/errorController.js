@@ -21,10 +21,12 @@ const getResponseError = error => {
 const isUniqueConstraintError = ({ name }) =>
   name === "SequelizeUniqueConstraintError";
 
-const getSequelizeErrorResponse = getMessageFunction => error => {
+const getSequelizeErrorResponse = getErrorsFunction => error => {
   const statusCode = httpCodes["Bad Request"];
-  const message = getMessageFunction(error);
-  const jSend = getJSend(statusCode, message);
+  const errors = getErrorsFunction(error);
+  const message =
+    "There was a problem with the data submitted, or some validation wasn't satisfied";
+  const jSend = getJSend(statusCode, message, errors);
   return { statusCode, jSend };
 };
 
