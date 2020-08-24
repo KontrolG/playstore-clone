@@ -17,13 +17,12 @@ const getUserDataFromRequestBody = getFieldFromObject(
   "roleId"
 );
 
-const login = (request, response) => {
+const login = catchAsyncHandler(async (request, response) => {
   const loginData = getLoginDataFromRequestBody(request.body);
-  // Validate inputs
-  // Find email
-  // compare passwords
-  sendResponseWithJSend(response, "OK", loginData);
-};
+  const authenticatedUser = await User.authenticate(loginData);
+
+  sendResponseWithJSend(response, "OK", authenticatedUser);
+});
 
 const getLoginDataFromRequestBody = getFieldFromObject("email", "password");
 

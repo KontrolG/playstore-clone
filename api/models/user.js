@@ -1,10 +1,30 @@
 "use strict";
 const { Model } = require("sequelize");
 const encryptFieldValue = require("../utils/encryptFieldValue");
+const comparePasswordWithEncryptedPassword = require("../utils/comparePasswordWithEncryptedPassword");
 
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {}
+    static async authenticate({ email, password }) {
+      const user = await this.getUserByEmail(email);
+      return this.getAuthenticatedUser(user, password);
+    }
+
+    static async getUserByEmail(email) {
+      const user = await this.findOne({ where: { email } });
+      if (!user) throw new Error("Invalid Email");
+      return user;
+    }
+
+    static async getAuthenticatedUser(user, password) {
+      const passwordMatchUserPassword = await comparePasswordWithEncryptedPassword(
+        password,
+        user.password
+      );
+      if (!passwordMatchUserPassword) throw new Error("Hola");
+      return user;
+    }
   }
   user.init(
     {

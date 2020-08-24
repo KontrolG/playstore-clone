@@ -2,6 +2,7 @@ const { httpCodes } = require("../utils/httpStatusCode");
 const getJSend = require("../utils/getJSend");
 
 const globalErrorHandler = (error, request, response, next) => {
+  console.log(error);
   const { statusCode, jSend } = getResponseError(error);
 
   response.status(statusCode).json(jSend);
@@ -15,7 +16,7 @@ const getResponseError = error => {
     return getValidationErrorResponse(error);
   }
 
-  // return { statusCode, jSend };
+  return { statusCode: 404, jSend: { error } };
 };
 
 const isUniqueConstraintError = ({ name }) =>
