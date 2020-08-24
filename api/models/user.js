@@ -55,7 +55,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Password field is required" }
+          notEmpty: { msg: "Password field is required" },
+          len: {
+            args: [6, 20],
+            msg: "Password must have a length between 6 and 20"
+          }
         }
       },
       roleId: {

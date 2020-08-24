@@ -1,4 +1,5 @@
-const User = require("../models").user;
+const jwt = require("jsonwebtoken");
+const { user: User, role: Role } = require("../models");
 const catchAsyncHandler = require("../utils/catchAsyncHandler");
 const getFieldFromObject = require("../utils/getFieldFromObject");
 const sendResponseWithJSend = require("../utils/sendResponseWithJSend");
@@ -17,12 +18,40 @@ const getUserDataFromRequestBody = getFieldFromObject(
   "roleId"
 );
 
+const getResponseContentFromAuthenticatedUser = async authenticatedUser => {
+  const user = await getUserData(authenticatedUser);
+  const token = await signUserToken(user.id);
+  return { token, user };
+};
+
 const login = catchAsyncHandler(async (request, response) => {
   const loginData = getLoginDataFromRequestBody(request.body);
   const authenticatedUser = await User.authenticate(loginData);
-
-  sendResponseWithJSend(response, "OK", authenticatedUser);
+  const content = await getResponseContentFromAuthenticatedUser(
+    authenticatedUser
+  );
+  sendResponseWithJSend(response, "OK", content);
 });
+
+/* 
+async function test(authenticatedUser, response) {
+  const content = await getResponseContentFromAuthenticatedUser(authenticatedUser);
+  sendResponseWithJSend(response, "OK", content);
+}
+*/
+
+const signUserToken = id => {
+  const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+
+  return jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN
+  });
+};
+
+const getUserData = async ({ id, firstName, lastName, roleId }) => {
+  const userRole = await Role.findByPk(roleId);
+  return { id, firstName, lastName, role: userRole.name };
+};
 
 const getLoginDataFromRequestBody = getFieldFromObject("email", "password");
 
