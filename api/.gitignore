@@ -1,2 +1,3 @@
 node_modules
+config/my-config.env
 config/dev-database.js
