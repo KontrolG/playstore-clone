@@ -1,6 +1,13 @@
+const sendResponseWithJSend = require("../utils/sendResponseWithJSend");
+
 const getAll = Model => async (request, response) => {
   const results = await Model.findAll();
-  response.status(200).json(results);
+  sendResponseWithJSend(response, "OK", { [Model.tableName]: results });
 };
 
-module.exports = { getAll };
+const getById = Model => async (request, response) => {
+  const results = await Model.findAll();
+  sendResponseWithJSend(response, "OK", { [Model.name]: results[0] });
+};
+
+module.exports = { getAll, getById };
