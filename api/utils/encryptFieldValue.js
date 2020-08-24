@@ -1,8 +1,7 @@
-// const bcryptjs = require("bcryptjs");
+const getEncryptedValue = require("./getEncryptedValue");
 
 const encryptFieldValue = field => async instance => {
-  const encryptedFieldValue =
-    "hashed " + instance[field]; /* await hashPassword(user.password) */
+  const encryptedFieldValue = await getEncryptedValue(instance[field]);
   instance[field] = encryptedFieldValue;
 };
 
